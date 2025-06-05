@@ -11,7 +11,7 @@ API REST para autenticación y gestión de tareas, desarrollada en Go con Gin, G
 - **Persistencia** con SQLite (usando GORM)
 - **Documentación interactiva** con Swagger (OpenAPI)
 - **Tests unitarios y de integración** con mocks y base en memoria
-- **Despliegue fácil** con Docker y Docker Compose
+- **Despliegue fácil** con Docker y Docker Compose con Multi-Stage para optimización
 - **Control de Versiones** con gitflow y git
 
 ---
@@ -19,7 +19,7 @@ API REST para autenticación y gestión de tareas, desarrollada en Go con Gin, G
 ## Requisitos
 
 - Go 1.20+ (para desarrollo local)
-- Docker y Docker Compose (para despliegue) con Multi-Stage para optimización
+- Docker y Docker Compose (para despliegue) 
 
 ---
 
