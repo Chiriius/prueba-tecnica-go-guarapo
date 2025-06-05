@@ -105,7 +105,7 @@ API REST para autenticación y gestión de tareas, desarrollada en Go con Gin, G
 - `GET    /api/tasks/{id}` — Obtener tarea por ID
 - `PUT    /api/tasks/{id}` — Actualizar tarea
 - `DELETE /api/tasks/{id}` — Eliminar tarea
-
+**En caso de que quieras consumirla por insomnia o otro en el repositorio se encuentra la coleccion para importar con todos los endpoints**
 Consulta la [documentación Swagger](http://localhost:8080/swagger/index.html) para detalles y ejemplos.
 
 ---
