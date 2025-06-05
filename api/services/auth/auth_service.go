@@ -11,6 +11,7 @@ import (
 
 type AuthService interface {
 	Login(ctx context.Context, username string) string
+	ValidateToken(token string) (string, bool)
 }
 
 type authService struct {
@@ -36,7 +37,7 @@ func (s *authService) Login(ctx context.Context, username string) string {
 	return token
 }
 
-func (s *authService) ValidateToken(ctx context.Context, token string) (string, bool) {
+func (s *authService) ValidateToken(token string) (string, bool) {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 
