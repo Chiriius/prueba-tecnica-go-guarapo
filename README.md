@@ -12,6 +12,7 @@ API REST para autenticación y gestión de tareas, desarrollada en Go con Gin, G
 - **Documentación interactiva** con Swagger (OpenAPI)
 - **Tests unitarios y de integración** con mocks y base en memoria
 - **Despliegue fácil** con Docker y Docker Compose
+- **Control de Versiones** con gitflow y git
 
 ---
 
