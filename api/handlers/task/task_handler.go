@@ -3,7 +3,6 @@ package handlers
 import (
 	"net/http"
 	"strconv"
-	"strings"
 
 	"prueba_tecnica_go_guarapo/api/models"
 	services "prueba_tecnica_go_guarapo/api/services/task"
@@ -32,6 +31,58 @@ func NewTaskHandler(taskService services.TaskService, logger *logrus.Logger) Tas
 	}
 }
 
+func (h *taskHandler) CreateTask(c *gin.Context) {
+	var req models.CreateTaskRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		h.logger.Warn("[Layer: task_handler] [Method: CreateTask] Datos inválidos: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "El título no puede estar vacío"})
+		return
+	}
+	username, _ := c.Get("username")
+	newTask, err := h.taskService.CreateTask(c.Request.Context(), req.Title, username.(string))
+	if err != nil {
+		h.logger.Error("[Layer: task_handler] [Method: CreateTask] Error: ", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "No se pudo crear la tarea"})
+		return
+	}
+	resp := models.TaskResponse{
+		ID:        newTask.ID,
+		Title:     newTask.Title,
+		Completed: newTask.Completed,
+		Owner:     newTask.Owner,
+	}
+	c.JSON(http.StatusCreated, resp)
+}
+
+func (h *taskHandler) UpdateTask(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		h.logger.Warn("[Layer: task_handler] [Method: UpdateTask] ID inválido: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID inválido"})
+		return
+	}
+	var req models.UpdateTaskRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		h.logger.Warn("[Layer: task_handler] [Method: UpdateTask] Datos inválidos: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "El título no puede estar vacío"})
+		return
+	}
+	username, _ := c.Get("username")
+	updatedTask, err := h.taskService.UpdateTask(c.Request.Context(), id, req.Title, req.Completed, username.(string))
+	if err != nil {
+		h.logger.Warn("[Layer: task_handler] [Method: UpdateTask] No encontrada: ", err)
+		c.JSON(http.StatusNotFound, gin.H{"error": "Tarea no encontrada"})
+		return
+	}
+	resp := models.TaskResponse{
+		ID:        updatedTask.ID,
+		Title:     updatedTask.Title,
+		Completed: updatedTask.Completed,
+		Owner:     updatedTask.Owner,
+	}
+	c.JSON(http.StatusOK, resp)
+}
+
 func (h *taskHandler) GetTasks(c *gin.Context) {
 	username, _ := c.Get("username")
 	tasks, err := h.taskService.GetTasksByUser(c.Request.Context(), username.(string))
@@ -40,10 +91,16 @@ func (h *taskHandler) GetTasks(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error al obtener tareas"})
 		return
 	}
-	if tasks == nil {
-		tasks = []*models.Task{}
+	var resp []models.TaskResponse
+	for _, t := range tasks {
+		resp = append(resp, models.TaskResponse{
+			ID:        t.ID,
+			Title:     t.Title,
+			Completed: t.Completed,
+			Owner:     t.Owner,
+		})
 	}
-	c.JSON(http.StatusOK, tasks)
+	c.JSON(http.StatusOK, resp)
 }
 
 func (h *taskHandler) GetTask(c *gin.Context) {
@@ -60,59 +117,14 @@ func (h *taskHandler) GetTask(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Tarea no encontrada"})
 		return
 	}
-	c.JSON(http.StatusOK, task)
+	resp := models.TaskResponse{
+		ID:        task.ID,
+		Title:     task.Title,
+		Completed: task.Completed,
+		Owner:     task.Owner,
+	}
+	c.JSON(http.StatusOK, resp)
 }
-
-func (h *taskHandler) CreateTask(c *gin.Context) {
-	var req models.Task
-	if err := c.ShouldBindJSON(&req); err != nil {
-		h.logger.Warn("[Layer: task_handler] [Method: CreateTask] Datos inválidos: ", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Datos inválidos"})
-		return
-	}
-	if strings.TrimSpace(req.Title) == "" {
-		h.logger.Warn("[Layer: task_handler] [Method: CreateTask] Título vacío")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "El título no puede estar vacío"})
-		return
-	}
-	username, _ := c.Get("username")
-	newTask, err := h.taskService.CreateTask(c.Request.Context(), req.Title, username.(string))
-	if err != nil {
-		h.logger.Error("[Layer: task_handler] [Method: CreateTask] Error: ", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "No se pudo crear la tarea"})
-		return
-	}
-	c.JSON(http.StatusCreated, newTask)
-}
-
-func (h *taskHandler) UpdateTask(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		h.logger.Warn("[Layer: task_handler] [Method: UpdateTask] ID inválido: ", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ID inválido"})
-		return
-	}
-	var req models.Task
-	if err := c.ShouldBindJSON(&req); err != nil {
-		h.logger.Warn("[Layer: task_handler] [Method: UpdateTask] Datos inválidos: ", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Datos inválidos"})
-		return
-	}
-	if strings.TrimSpace(req.Title) == "" {
-		h.logger.Warn("[Layer: task_handler] [Method: UpdateTask] Título vacío")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "El título no puede estar vacío"})
-		return
-	}
-	username, _ := c.Get("username")
-	updatedTask, err := h.taskService.UpdateTask(c.Request.Context(), id, req.Title, req.Completed, username.(string))
-	if err != nil {
-		h.logger.Warn("[Layer: task_handler] [Method: UpdateTask] No encontrada: ", err)
-		c.JSON(http.StatusNotFound, gin.H{"error": "Tarea no encontrada"})
-		return
-	}
-	c.JSON(http.StatusOK, updatedTask)
-}
-
 func (h *taskHandler) DeleteTask(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
