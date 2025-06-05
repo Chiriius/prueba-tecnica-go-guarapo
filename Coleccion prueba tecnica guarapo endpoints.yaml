@@ -1,0 +1,184 @@
+type: collection.insomnia.rest/5.0
+name: Prueba Tecnica Go Guarapo
+meta:
+  id: wrk_671c2ab3e5f24034b7c2a454effe4986
+  created: 1749140470290
+  modified: 1749140470290
+collection:
+  - url: localhost:8080/api/login
+    name: Login
+    meta:
+      id: req_d3c9efb1ab7945678a9694ae0999b73a
+      created: 1749140511779
+      modified: 1749144640993
+      isPrivate: false
+      sortKey: -1749140511779
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"username": "Juancho"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: localhost:8080/api/tasks
+    name: Create task
+    meta:
+      id: req_c0ed191ae2e14de6a0d7f5da34af41c0
+      created: 1749140733036
+      modified: 1749148823923
+      isPrivate: false
+      sortKey: -1749140733036
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"title":"Saltar"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.1.0
+    authentication:
+      type: bearer
+      token: 81ee134c3d7f659af54b79a5807c6ba3
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: localhost:8080/api/tasks/1
+    name: Get task by id
+    meta:
+      id: req_f38495447f724ea2a37cd27a667aad93
+      created: 1749141685083
+      modified: 1749144895655
+      isPrivate: false
+      sortKey: -1749141685083
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    authentication:
+      type: bearer
+      token: 175ef3162835da9cdcbdca43eedb8316
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: localhost:8080/api/tasks
+    name: Get All tasks
+    meta:
+      id: req_f78045fffc484cbdb86816679f3aa2ac
+      created: 1749141917601
+      modified: 1749144675575
+      isPrivate: false
+      sortKey: -1749141917601
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    authentication:
+      type: bearer
+      token: 5f95c911d528af028390f537c0cc3ca3
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: localhost:8080/api/tasks/15
+    name: Update task by id
+    meta:
+      id: req_a478cc7d8daa43cfaae448485fcc44fa
+      created: 1749142037454
+      modified: 1749144780022
+      isPrivate: false
+      sortKey: -1749142037454
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"title":"No cantar",
+        	"completed": true
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.1.0
+    authentication:
+      type: bearer
+      token: 5f95c911d528af028390f537c0cc3ca3
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: localhost:8080/api/tasks/15
+    name: Delete task by id
+    meta:
+      id: req_4f9f4099add948ac83cf93155fe93c5d
+      created: 1749142162381
+      modified: 1749144721531
+      isPrivate: false
+      sortKey: -1749142162381
+    method: DELETE
+    body:
+      mimeType: application/json
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.1.0
+    authentication:
+      type: bearer
+      token: 5f95c911d528af028390f537c0cc3ca3
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_ad524a8b70fb4275ec46c74f3e9842b66667752b
+    created: 1749140470294
+    modified: 1749140470294
+environments:
+  name: Base Environment
+  meta:
+    id: env_ad524a8b70fb4275ec46c74f3e9842b66667752b
+    created: 1749140470293
+    modified: 1749140470293
+    isPrivate: false
