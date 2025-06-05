@@ -26,6 +26,16 @@ func NewAuthHandler(authService services.AuthService, logger *logrus.Logger) Aut
 	}
 }
 
+// Login godoc
+// @Summary      Login de usuario
+// @Description  Autentica un usuario y retorna un token
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        request body models.LoginRequest true "Credenciales de login"
+// @Success      200 {object} models.LoginResponse
+// @Failure      400 {object} map[string]string
+// @Router       /api/login [post]
 func (h *authHandler) Login(c *gin.Context) {
 	var req models.LoginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {

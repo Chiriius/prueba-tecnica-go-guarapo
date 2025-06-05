@@ -31,6 +31,18 @@ func NewTaskHandler(taskService services.TaskService, logger *logrus.Logger) Tas
 	}
 }
 
+// CreateTask godoc
+// @Summary      Crear tarea
+// @Description  Crea una nueva tarea para el usuario autenticado
+// @Tags         tasks
+// @Accept       json
+// @Produce      json
+// @Param        request body models.CreateTaskRequest true "Datos de la tarea"
+// @Success      201 {object} models.TaskResponse
+// @Failure      400 {object} map[string]string
+// @Failure      500 {object} map[string]string
+// @Security     ApiKeyAuth
+// @Router       /api/tasks [post]
 func (h *taskHandler) CreateTask(c *gin.Context) {
 	var req models.CreateTaskRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -54,6 +66,19 @@ func (h *taskHandler) CreateTask(c *gin.Context) {
 	c.JSON(http.StatusCreated, resp)
 }
 
+// UpdateTask godoc
+// @Summary      Actualizar tarea
+// @Description  Actualiza una tarea existente del usuario autenticado
+// @Tags         tasks
+// @Accept       json
+// @Produce      json
+// @Param        id path int true "ID de la tarea"
+// @Param        request body models.UpdateTaskRequest true "Datos de la tarea"
+// @Success      200 {object} models.TaskResponse
+// @Failure      400 {object} map[string]string
+// @Failure      404 {object} map[string]string
+// @Security     ApiKeyAuth
+// @Router       /api/tasks/{id} [put]
 func (h *taskHandler) UpdateTask(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -83,6 +108,15 @@ func (h *taskHandler) UpdateTask(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// GetTasks godoc
+// @Summary      Listar tareas
+// @Description  Obtiene todas las tareas del usuario autenticado
+// @Tags         tasks
+// @Produce      json
+// @Success      200 {array} models.TaskResponse
+// @Failure      500 {object} map[string]string
+// @Security     ApiKeyAuth
+// @Router       /api/tasks [get]
 func (h *taskHandler) GetTasks(c *gin.Context) {
 	username, _ := c.Get("username")
 	tasks, err := h.taskService.GetTasksByUser(c.Request.Context(), username.(string))
@@ -103,6 +137,17 @@ func (h *taskHandler) GetTasks(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// GetTask godoc
+// @Summary      Obtener tarea
+// @Description  Obtiene una tarea específica del usuario autenticado
+// @Tags         tasks
+// @Produce      json
+// @Param        id path int true "ID de la tarea"
+// @Success      200 {object} models.TaskResponse
+// @Failure      400 {object} map[string]string
+// @Failure      404 {object} map[string]string
+// @Security     ApiKeyAuth
+// @Router       /api/tasks/{id} [get]
 func (h *taskHandler) GetTask(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -125,6 +170,18 @@ func (h *taskHandler) GetTask(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, resp)
 }
+
+// DeleteTask godoc
+// @Summary      Eliminar tarea
+// @Description  Elimina una tarea del usuario autenticado
+// @Tags         tasks
+// @Produce      json
+// @Param        id path int true "ID de la tarea"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} map[string]string
+// @Failure      404 {object} map[string]string
+// @Security     ApiKeyAuth
+// @Router       /api/tasks/{id} [delete]
 func (h *taskHandler) DeleteTask(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

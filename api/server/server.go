@@ -1,8 +1,19 @@
 package server
 
+// @title           API de Tareas Guarapo
+// @version         1.0
+// @description     API para autenticación y gestión de tareas.
+// @host            localhost:8080
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 import (
+	_ "prueba_tecnica_go_guarapo/api/docs"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 
@@ -56,6 +67,7 @@ func (s *Server) Start(addr string) {
 		}
 	}
 
+	s.router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	s.logger.Infof("[Layer: Server] [Method: Start] Server listened in %s", addr)
 	s.router.Run(addr)
 }
