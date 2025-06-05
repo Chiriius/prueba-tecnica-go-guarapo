@@ -19,7 +19,7 @@ API REST para autenticación y gestión de tareas, desarrollada en Go con Gin, G
 ## Requisitos
 
 - Go 1.20+ (para desarrollo local)
-- Docker y Docker Compose (para despliegue)
+- Docker y Docker Compose (para despliegue) con Multi-Stage para optimización
 
 ---
 
